@@ -1,0 +1,247 @@
+;===========================================================
+;
+;
+;   ██████╗  ██████╗ ██╗  ██╗   ██╗██████╗  █████╗ ██████╗
+;   ██╔══██╗██╔═══██╗██║  ╚██╗ ██╔╝██╔══██╗██╔══██╗██╔══██╗
+;   ██████╔╝██║   ██║██║   ╚████╔╝ ██████╔╝███████║██████╔╝
+;   ██╔═══╝ ██║   ██║██║    ╚██╔╝  ██╔══██╗██╔══██║██╔══██╗
+;   ██║     ╚██████╔╝███████╗██║   ██████╔╝██║  ██║██║  ██║
+;   ╚═╝      ╚═════╝ ╚══════╝╚═╝   ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═╝
+;
+;
+;   To learn more about how to configure Polybar
+;   go to https://github.com/polybar/polybar
+;
+;   The README contains a lot of information
+;
+;===========================================================
+
+[bar/main]
+width = 60%
+height = 50
+offset-x = 20%
+offset-y = 4%
+radius = 0.0
+fixed-center = true
+bottom = false
+enable-ipc = true
+
+background = #8b9e70
+foreground = #fffeff
+
+line-size = 0
+line-color = ${colors.background-alt}
+
+border-size = 0
+border-color = #D3D7DA
+
+padding-left = 3
+padding-right = 3
+
+module-margin-left = 0
+module-margin-right = 2
+
+font-0 = Cozette:style=bold:size=12;2
+
+modules-left = date
+modules-center = polywins
+modules-right = volume
+
+wm-restack = bspwm
+;wm-restack = bspwm
+
+override-redirect = false
+
+;; scroll-up = bspwm-desknext
+;; scroll-down = bspwm-deskprev
+
+;scroll-up = i3wm-wsnext
+;scroll-down = i3wm-wsprev
+
+cursor-click = pointer
+cursor-scroll = ns-resize
+
+[module/polywins]
+type = custom/script
+exec = ~/.config/polybar/scripts/polywins.sh 2>/dev/null
+format = <label>
+label = %output%
+label-padding = 1
+tail = true
+
+[module/xkeyboard]
+type = internal/xkeyboard
+blacklist-0 = num lock
+
+[module/toggle_spotify]
+type = custom/text
+content = "  "
+content-padding = 0
+content-foreground = #C0CCCF
+click-left = spotify
+click-right = spotify
+
+[module/toggle_termite]
+type = custom/text
+content = "  "
+content-padding = 0
+content-foreground = #C0CCCF
+click-left = termite
+click-right = termite
+
+[module/time]
+type = custom/text
+content = " "
+content-foreground = #fe7692
+
+[module/launcher]
+type = custom/text
+content = "   "
+click-left = eww open-many dock quit firefox spotify thunar atom
+
+[module/bspwm]
+type = internal/bspwm
+
+; Only show workpsaces on the same output as the bar
+; pin-workspaces=true
+ws-icon-0 = I; 
+ws-icon-1 = II; 
+ws-icon-2 = III; 
+ws-icon-3 = IV; 
+ws-icon-4 = V; 
+
+ws-icon-default =
+
+format = <label-state> <label-mode>
+
+label-focused = %icon%
+label-focused-foreground = #77abf5
+label-focused-padding = 2
+
+label-occupied = %icon%
+label-occupied-foreground = #bdc0c8
+label-occupied-padding = 2
+
+label-urgent = %icon%
+label-urgent-background = #bdc0c8
+label-urgent-padding = 2
+
+label-empty = %icon%
+label-empty-foreground = #bdc0c8
+label-empty-padding = 2
+; Separator in between workspaces
+; label-separator = |
+
+[module/notification]
+type = custom/text
+content = 
+content-padding = 0
+content-foreground = #fbdf90
+click-left = sh notifications.sh
+click-right = sh notifications.sh
+
+[module/workspaces]
+type = internal/xworkspaces
+pin-workspaces = true
+enable-click = true
+enable-scroll = true
+format-padding = 1
+
+icon-default = 
+
+format = <label-state>
+format-background = ${color.bg1}
+label-active = O
+label-occupied = O
+label-urgent = O
+label-empty = O
+
+label-empty-padding = 1
+label-active-padding = 1
+label-urgent-padding = 1
+label-occupied-padding = 1
+
+label-empty-foreground = #342E2B
+label-active-foreground = #A5A39F
+label-urgent-foreground = #DAD5CC
+label-occupied-foreground = #EDE9E4
+
+[module/powermenu]
+type = custom/text
+content = "      "
+content-padding = 0
+content-foreground = #000202
+click-left = eww open-many  dock_power shutdown reboot quit_power
+click-right = eww open-many  dock_power shutdown reboot quit_power
+
+[module/spotify]
+type = custom/script
+tail = true
+; prefix symbol is shown before the text
+format-prefix = "    "
+format = <label>
+exec = ~/.config/polybar/scripts/scroll_spotify_status.sh
+
+[module/spotify-prev]
+type = custom/script
+exec = echo ""
+format = <label>
+click-left = playerctl previous spotify
+
+[module/spotify-play-pause]
+type = custom/ipc
+hook-0 = echo ""
+hook-1 = echo ""
+initial = 1
+click-left = playerctl play-pause spotify
+
+[module/spotify-next]
+type = custom/script
+exec = echo ""
+format = <label>
+click-left = playerctl next spotify
+
+
+[module/volume]
+type = internal/pulseaudio
+format-volume = <ramp-volume> <label-volume>
+format-volume-padding = 3
+label-volume = %percentage%%
+label-muted = "muted"
+label-muted-padding = 3
+ramp-volume-0 = "   "
+ramp-volume-1 = "   "
+ramp-volume-2 = "   "
+ramp-volume-3 = "   "
+ramp-volume-4 = "   "
+ramp-volume-5 = "   "
+ramp-volume-6 = "   "
+
+[module/xwindow]
+type = internal/xwindow
+label = %title:0:20:...%
+format-foreground = #a5d4af
+format-padding = 0
+
+[module/date]
+type = internal/date
+interval = 5
+time      = "   %B %Y at %I:%M %p"
+time-alt  = "   %B %Y"
+label = " %time%"
+format-padding = 2
+
+
+[settings]
+screenchange-reload = true
+;compositing-background = xor
+;compositing-background = screen
+;compositing-foreground = source
+;compositing-border = over
+;pseudo-transparency = false
+
+[global/wm]
+margin-top = 0
+margin-bottom = 0
+
+; vim:ft=dosini
